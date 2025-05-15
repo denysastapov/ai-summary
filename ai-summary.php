@@ -10,10 +10,8 @@
  * Text Domain:       ai-summary
  */
 
-// Если файл зашёл не через WP — выходим
 defined('ABSPATH') || exit;
 
-// Основная функция генерации
 function ai_generate_summary(string $content): string
 {
   $api_key = defined('OPENAI_API_KEY') ? OPENAI_API_KEY : '';
@@ -63,7 +61,6 @@ function ai_generate_summary(string $content): string
   return $text !== '' ? esc_html($text) : 'No summary could be generated.';
 }
 
-// Шорткод для вывода summary
 function ai_summary_shortcode(): string
 {
   if (! is_singular('post')) {
@@ -80,7 +77,6 @@ function ai_summary_shortcode(): string
 
   $summary = ai_generate_summary($content);
 
-  // простая фильтрация ошибок
   if (strpos($summary, 'error') === false && strpos($summary, 'Missing') === false && strpos($summary, 'No summary') === false) {
     update_post_meta($post_id, '_ai_summary', $summary);
   }
